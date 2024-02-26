@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
             forcedTheme="dark"
             storageKey="twicth-clone-theme"
           >
+            <Toaster theme="light" position="bottom-center" />
             {children}
           </ThemeProvider>
         </body>

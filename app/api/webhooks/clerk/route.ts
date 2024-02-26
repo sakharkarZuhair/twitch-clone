@@ -1,14 +1,16 @@
-import { db } from "@/lib/db";
-import { WebhookEvent } from "@clerk/nextjs/server";
-import { headers } from "next/headers";
 import { Webhook } from "svix";
+import { headers } from "next/headers";
+import { WebhookEvent } from "@clerk/nextjs/server";
+
+import { db } from "@/lib/db";
 
 export async function POST(req: Request) {
+  // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
-      "Please add WEBHOOK_SECRET from clerk Dashboard to .env or .en.local"
+      "Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
     );
   }
 
@@ -20,7 +22,7 @@ export async function POST(req: Request) {
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
-    return new Response("Error occured --- no svix headers", {
+    return new Response("Error occured -- no svix headers", {
       status: 400,
     });
   }
@@ -48,11 +50,10 @@ export async function POST(req: Request) {
     });
   }
 
-  // Get the ID and type
   const eventType = evt.type;
 
-  // console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  //   console.log("Webhook body:", body);
+  console.log("EVENT TYPE", eventType);
+
   if (eventType === "user.created") {
     await db.user.create({
       data: {
@@ -64,16 +65,6 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.updated") {
-    const currentUser = await db.user.findUnique({
-      where: {
-        externalUserId: payload.data.id,
-      },
-    });
-
-    if (!currentUser) {
-      return new Response("User not found", { status: 404 });
-    }
-
     await db.user.update({
       where: {
         externalUserId: payload.data.id,
