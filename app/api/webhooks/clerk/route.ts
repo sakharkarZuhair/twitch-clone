@@ -52,7 +52,7 @@ export async function POST(req: Request) {
 
   const eventType = evt.type;
 
-  console.log("EVENT TYPE", eventType);
+  // console.log("EVENT TYPE", eventType);
 
   if (eventType === "user.created") {
     await db.user.create({
@@ -60,6 +60,11 @@ export async function POST(req: Request) {
         externalUserId: payload.data.id,
         username: payload.data.username,
         imageUrl: payload.data.image_url,
+        stream: {
+          create: {
+            name: `${payload.data.username}'s stream`
+          }
+        }
       },
     });
   }
