@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 
 import { LiveKitRoom } from "@livekit/components-react";
 
-import Video from "./video";
-import Chat from "./chat";
+import Video, { VideoSkeleton } from "./video";
+import Chat, { ChatSkeleton } from "./chat";
 import ChatToggle from "./chat-toggle";
 
 interface StreamPlayerProps {
@@ -25,7 +25,7 @@ const StreamPlayer = ({ user, isFollowing, stream }: StreamPlayerProps) => {
   const { collapsed } = useChatSidebar((state) => state);
 
   if (!token || !name || !identity) {
-    return <div> Cannot watch the stream</div>;
+    return <StreamPlayerSkeleton />;
   }
 
   return (
@@ -43,7 +43,7 @@ const StreamPlayer = ({ user, isFollowing, stream }: StreamPlayerProps) => {
           collapsed && "lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2"
         )}
       >
-        <div className="space-y-4 col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span -5 lg:overflow-y-auto hidden-scrollbar pb-10">
+        <div className="space-y-4 col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-5 lg:overflow-y-auto hidden-scrollbar pb-10">
           <Video hostName={user.username} hostIdentity={user.id} />
         </div>
         <div className={cn("col-span-1", collapsed && "hidden")}>
@@ -59,6 +59,20 @@ const StreamPlayer = ({ user, isFollowing, stream }: StreamPlayerProps) => {
         </div>
       </LiveKitRoom>
     </>
+  );
+};
+
+export const StreamPlayerSkeleton = () => {
+  return (
+    <div className="grid grid-cols-1 lg:gap-y-0 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-6 h-full">
+      <div className="space-y-4 col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-5 lg:overflow-y-auto hidden-scrollbar">
+        <VideoSkeleton />
+        {/* HeaderSele;ton */}
+        <div className="col-span-1 bg-background">
+          <ChatSkeleton />
+        </div>
+      </div>
+    </div>
   );
 };
 
