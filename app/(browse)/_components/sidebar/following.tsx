@@ -4,7 +4,11 @@ import { Follow, User } from "@prisma/client";
 import UserItem, { UserItemSkeleton } from "./user-item";
 
 interface FollowingProps {
-  data: (Follow & { following: User })[];
+  data: (Follow & {
+    following: User & {
+      stream: { isLive: boolean } | null;
+    };
+  })[];
 }
 
 const Following = ({ data }: FollowingProps) => {
@@ -27,6 +31,7 @@ const Following = ({ data }: FollowingProps) => {
             imageUrl={follow.following.imageUrl}
             username={follow.following.username}
             key={follow.following.id}
+            isLive={follow.following.stream?.isLive}
           />
         ))}
       </ul>
