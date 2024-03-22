@@ -14,9 +14,10 @@ import Chat, { ChatSkeleton } from "./chat";
 import ChatToggle from "./chat-toggle";
 import Header, { HeaderSkeleton } from "./header";
 import { Inforcard } from "./info-card";
+import { AboutCard } from "./about-card";
 
 interface StreamPlayerProps {
-  user: User & { stream: Stream | null };
+  user: User & { stream: Stream | null; _count: { followedBy: number } };
   stream: Stream;
   isFollowing: boolean;
 }
@@ -60,6 +61,13 @@ const StreamPlayer = ({ user, isFollowing, stream }: StreamPlayerProps) => {
             viewerIdentity={identity}
             name={stream.name}
             thumbnailUrl={stream.thumbnail}
+          />
+          <AboutCard
+            hostName={user.username}
+            hostIdentity={user.id}
+            viewerIdentity={identity}
+            bio={user.bio}
+            followedByCount={user._count.followedBy}
           />
         </div>
         <div className={cn("col-span-1", collapsed && "hidden")}>
