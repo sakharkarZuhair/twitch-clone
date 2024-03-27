@@ -14,6 +14,8 @@ interface FollowingProps {
 const Following = ({ data }: FollowingProps) => {
   const { collapsed } = useSidebar((state) => state);
 
+  // console.log("WHAT", data)
+
   if (!data.length) {
     return null;
   }
@@ -31,7 +33,7 @@ const Following = ({ data }: FollowingProps) => {
             imageUrl={follow.following.imageUrl}
             username={follow.following.username}
             key={follow.following.id}
-            isLive={follow.following.stream?.isLive}
+            isLive={follow.following?.stream?.isLive}
           />
         ))}
       </ul>

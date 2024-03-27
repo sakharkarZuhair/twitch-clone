@@ -43,7 +43,7 @@ export const resetIngressess = async (hostIdentity: string) => {
 export const createIngress = async (ingressType: IngressInput) => {
   const self = await getSelf();
 
-  // Resetting Previous Ingress
+  // Resetting Previous Ingressz
   await resetIngressess(self.id);
 
   const options: CreateIngressOptions = {
