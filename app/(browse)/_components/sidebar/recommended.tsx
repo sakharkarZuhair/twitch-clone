@@ -15,6 +15,8 @@ const Recommended = ({ data }: RecommendedProps) => {
 
   const showLabel = !collapsed && data.length > 0;
 
+  // console.log("USER", data);
+
   return (
     <div>
       {showLabel && (
